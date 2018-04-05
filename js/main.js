@@ -167,7 +167,6 @@ createRestaurantHTML = (restaurant) => {
   more.href = DBHelper.urlForRestaurant(restaurant);
   divContainer.append(more);
 
-
   return li;
 }
 
