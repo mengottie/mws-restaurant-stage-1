@@ -4,12 +4,17 @@ let restaurants,
 var map
 var markers = []
 
+window.addEventListener('load', (event) => {
+  self.registerServiceWorker();
+})
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
+  updateRestaurants();
 });
 
 /**
@@ -80,7 +85,6 @@ window.initMap = () => {
     center: loc,
     scrollwheel: false
   });
-  updateRestaurants();
 }
 
 /**
@@ -129,7 +133,9 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
-  addMarkersToMap();
+  if (self.map) {
+    addMarkersToMap();
+  }
 }
 
 /**
@@ -179,3 +185,14 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+
+/**
+ *@description Register service worker
+  */
+ function registerServiceWorker() {
+  if (!navigator.serviceWorker) return;
+
+  navigator.serviceWorker.register('/sw.js').then(function(reg){
+    console.log('registered service worker: ' + reg);
+  });
+ }
