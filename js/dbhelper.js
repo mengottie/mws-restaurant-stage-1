@@ -140,18 +140,47 @@ class DBHelper {
   }
 
   /**
-   * Restaurant page URL.
+   * @description Restaurant page URL.
+   * @returns string
    */
   static urlForRestaurant(restaurant) {
     return (`./restaurant.html?id=${restaurant.id}`);
   }
 
   /**
-   * Restaurant image URL.
+   * @description Restaurant image URL.
+   * @returns string
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}`);
+    let srcimg = restaurant.photograph.replace(/.jpg/, '');
+    srcimg += '-800px.jpg';
+    return (`/img/${srcimg}`);
   }
+
+  /**
+   * @description Restaurnat srcset for responsive images of url
+   * @returns string
+    */
+   static imageSrcsetForRestaurant(restaurant) {
+      let srcset = '';
+      let srcimg  = '/img/' + restaurant.photograph.replace(/.jpg/, '');
+      const srcOptions = [
+        '-400px.jpg 400w,\n',
+        '-600px.jpg 600w,\n',
+        '-800px.jpg 800w\n'
+      ];
+      srcOptions.forEach(function(src){
+        srcset = srcset + srcimg + src;
+      })
+      return srcset;
+   }
+
+   /**
+    * @description Restaurnt image alternative of url
+     */
+    static imageAltForRestaurant(restaurant) {
+      return (restaurant.photo_description);
+    }
 
   /**
    * Map marker for a restaurant.
