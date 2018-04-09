@@ -1,6 +1,5 @@
-var staticCacheName = 'restaurant-review-v1';
-
-var variableContentCacheName = 'restaurant-review-var-content';
+var staticCacheName = 'restaurant-review-v11'
+var variableContentCacheName = 'restaurant-review-var-content-v11';
 
 self.addEventListener('install', function(event) {
   console.log('install service worker: ' + event);
@@ -9,10 +8,10 @@ self.addEventListener('install', function(event) {
       return cache.addAll([
           'index.html',
           'restaurant.html',
+          'css/styles.css',
           'js/main.js',
           'js/restaurant_info.js',
           'js/dbhelper.js',
-          'css/styles.css',
           'https://fonts.gstatic.com/s/roboto/v15/2UX7WLTfW3W8TclTUvlFyQ.woff',
           'https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff'
       ]);
@@ -78,20 +77,14 @@ function serveJSON(request) {
 }
 
 function serveDetail(request) {
-    let qs = request.url.querystring;
-    let reqFromCache = request;
-    reqFromCache.querystring = '';
-    console.log('querystring: ' + qs);
-    return caches.open(variableContentCacheName).then(function(cache){
-        return cache.match(reqFromCache).then(function(response){
+    let req = request.clone;
+    console.log('request: ' + req);
+    return caches.open(staticCacheName).then(function(cache){
+        return cache.match(request).then(function(response){
             if (response) {
-                response.url.querystring = qs;
                 return response;
             }
-            return fetch(request).then(function(netResposnse){
-                cache.put(request, netResposnse.clone());
-                return netResposnse;
-            })
+            return fetch(request)
         })
     });
 }

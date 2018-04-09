@@ -1,23 +1,41 @@
-let restaurant;
+var restaurant;
 var map;
-
+var markerCreated = false;
 /**
- * Initialize Google map, called from HTML.
+ * load restaurant detail and reviews when the document it's loaded
+ * instead the current delegation of the responsability at the initMap function
  */
-window.initMap = () => {
+document.addEventListener('DOMContentLoaded', (event) => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
       console.error(error);
     } else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
       fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+      if (self.map && !markerCreated) {
+        DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+        markerCreated = true;
+      }
     }
   });
+});
+/**
+ * Initialize Google map, called from HTML.
+ */
+window.initMap = () => {
+  let loc = {
+    lat: 40.722216,
+    lng: -73.987501
+  };
+  self.map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 12,
+    center: loc,
+    scrollwheel: false
+  });
+
+  if (self.restaurant && !markerCreated) {
+    DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+    markerCreated = true;
+  }
 }
 
 /**
@@ -148,7 +166,7 @@ createReviewHTML = (review) => {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-fillBreadcrumb = (restaurant=self.restaurant) => {
+fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
