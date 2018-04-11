@@ -179,7 +179,7 @@ class DBHelper {
     * @description Restaurnt image alternative of url
      */
     static imageAltForRestaurant(restaurant) {
-      return (restaurant.photo_description);
+      return (`Image of ${restaurant.name} Restaurant`);
     }
 
   /**

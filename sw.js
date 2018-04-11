@@ -1,4 +1,4 @@
-var staticCacheName = 'restaurant-review-v13';
+var staticCacheName = 'restaurant-review-v17';
 
 self.addEventListener('install', function(event) {
   console.log('install service worker: ' + event);

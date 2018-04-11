@@ -145,6 +145,7 @@ nav h1 a {
 #map-container {
   height: 45vh;
   min-height: 45vh;
+  width: 100%;
 }
 
 #map {
@@ -379,32 +380,14 @@ nav h1 a {
     width: 100%;
   }
 
-  .filter-options {
-    width: 100%;
-    order:  -1;
-  }
-
-  #map-container,
   .inside #map-container {
     width: 50%;
     height: inherit;
-    order: 2;
     margin-bottom: 10px;
-  }
-
-  .list {
-    width: 50%;
-    order: 1;
-  }
-
-  .restaurant-reviews-container{
-    width: 50%;
-    order: 1;
   }
 
   .restaurant-reviews {
     width: 100%;
-    order: 3;
   }
 
   footer {
@@ -423,11 +406,13 @@ nav h1 a {
   .restaurants-list {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
     width: 100%;
   }
 
   .restaurants-list li {
-    width: 48%;
+    width: 31%;
     margin: 1%;
   }
 
@@ -451,19 +436,11 @@ nav h1 a {
     margin-right: auto;
   }
 
-  .list {
-    width: 66.66667%;
-  }
-
-  #map-container {
-    width: 33.33333%;
-  }
-
   .restaurants-list li {
-    width: 31%;
+    width: 23%;
   }
 
   .reviews-list li {
-    width: 25%;
+    width: 23%;
   }
 }
