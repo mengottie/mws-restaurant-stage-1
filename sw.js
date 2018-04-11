@@ -1,5 +1,4 @@
-var staticCacheName = 'restaurant-review-v11'
-var variableContentCacheName = 'restaurant-review-var-content-v11';
+var staticCacheName = 'restaurant-review-v13';
 
 self.addEventListener('install', function(event) {
   console.log('install service worker: ' + event);
@@ -24,22 +23,18 @@ self.addEventListener('install', function(event) {
 
 self.addEventListener('fetch', function(event) {
   var requestUrl = new URL(event.request.url);
+  console.log(requestUrl.pathname);
   if (requestUrl.origin === location.origin) {
     if (requestUrl.pathname.startsWith('/img/')) {
       event.respondWith(servePhoto(event.request));
       return;
     }
-    if (requestUrl.pathname.startsWith('/data/')) {
-        event.respondWith(serveJSON(event.request));
-        return;
-      }
     if (requestUrl.pathname.startsWith('/restaurant.html')) {
         event.respondWith(serveDetail(event.request));
         return;
     }
   }
   if (requestUrl.pathname === '/') {
-      console.log(requestUrl.pathname);
     requestUrl.pathname = '/index.html';
   }
   event.respondWith(
@@ -52,7 +47,7 @@ self.addEventListener('fetch', function(event) {
 function servePhoto(request) {
     let storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
 
-    return caches.open(variableContentCacheName).then(function(cache) {
+    return caches.open(staticCacheName).then(function(cache) {
       return cache.match(storageUrl).then(function(response) {
         if (response) return response;
 
@@ -64,24 +59,12 @@ function servePhoto(request) {
     });
   }
 
-function serveJSON(request) {
-    return caches.open(variableContentCacheName).then(function(cache){
-        return cache.match(request).then(function(response){
-            if (response) return response;
-
-            return fetch(request).then(function(netResposnse){
-                cache.put(request, netResposnse.clone());
-                return netResposnse;
-            })
-        })
-    });
-}
-
 function serveDetail(request) {
     let req = request.clone;
-    console.log('request: ' + req);
+    console.log(req);
+    let storageUrl = req.url;
     return caches.open(staticCacheName).then(function(cache){
-        return cache.match(request).then(function(response){
+        return cache.match(storageUrl).then(function(response){
             if (response) {
                 return response;
             }

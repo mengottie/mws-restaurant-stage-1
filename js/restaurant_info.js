@@ -149,7 +149,7 @@ createReviewHTML = (review) => {
 
   const h4 = document.createElement('h4');
   h4.innerHTML = review.name;
-  divTitle.appendChild(h3);
+  divTitle.appendChild(h4);
 
   const date = document.createElement('span');
   date.classList.add("reviews-title-detail");
