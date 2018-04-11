@@ -1,5 +1,6 @@
-var staticCacheName = 'restaurant-review-v17';
+var staticCacheName = 'restaurant-review-v1';
 
+/* Install the service worker and precache static resource and JSON file */
 self.addEventListener('install', function(event) {
   console.log('install service worker: ' + event);
   event.waitUntil(
@@ -21,16 +22,16 @@ self.addEventListener('install', function(event) {
   );
 });
 
+/* Intercept the fech event for use preferably static content precached  */
 self.addEventListener('fetch', function(event) {
   var requestUrl = new URL(event.request.url);
-  console.log(requestUrl.pathname);
   if (requestUrl.origin === location.origin) {
     if (requestUrl.pathname.startsWith('/img/')) {
       event.respondWith(servePhoto(event.request));
       return;
     }
     if (requestUrl.pathname.startsWith('/restaurant.html')) {
-        event.respondWith(serveDetail(event.request));
+        event.respondWith(serveDetail(event.request, requestUrl.origin + requestUrl.pathname));
         return;
     }
   }
@@ -44,6 +45,10 @@ self.addEventListener('fetch', function(event) {
   );
 });
 
+/**
+ * @description serve responce images stored into cache
+ * @param {*} request
+ */
 function servePhoto(request) {
     let storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
 
@@ -59,10 +64,12 @@ function servePhoto(request) {
     });
   }
 
-function serveDetail(request) {
-    let req = request.clone;
-    console.log(req);
-    let storageUrl = req.url;
+/**
+ * @description serve the restaurant detail precached for work offline
+ * @param {*} request
+ * @param {*} storageUrl url without the search string to corerctly find restaurant.html into cache
+ */
+function serveDetail(request, storageUrl) {
     return caches.open(staticCacheName).then(function(cache){
         return cache.match(storageUrl).then(function(response){
             if (response) {
