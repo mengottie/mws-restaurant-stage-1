@@ -428,19 +428,10 @@ nav h1 a {
 
 @media screen and (min-width: 1024px) {
 
-  header,
-  .wrapper,
-  .inside header{
-    width: 1024px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .restaurants-list li {
+  .restaurants-list li,
+  .reviews-list li
+   {
     width: 23%;
   }
 
-  .reviews-list li {
-    width: 23%;
-  }
 }
