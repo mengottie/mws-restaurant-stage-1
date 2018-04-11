@@ -1,6 +1,11 @@
 var restaurant;
 var map;
 var markerCreated = false;
+
+window.addEventListener('load', (event) => {
+  self.registerServiceWorker();
+})
+
 /**
  * load restaurant detail and reviews when the document it's loaded
  * instead the current delegation of the responsability at the initMap function
@@ -116,7 +121,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
@@ -142,8 +147,8 @@ createReviewHTML = (review) => {
   divTitle.classList.add("reviews-header");
   li.appendChild(divTitle);
 
-  const h3 = document.createElement('h3');
-  h3.innerHTML = review.name;
+  const h4 = document.createElement('h4');
+  h4.innerHTML = review.name;
   divTitle.appendChild(h3);
 
   const date = document.createElement('span');
@@ -188,3 +193,14 @@ getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+/**
+ *@description Register service worker
+  */
+ function registerServiceWorker() {
+  if (!navigator.serviceWorker) return;
+
+  navigator.serviceWorker.register('/sw.js').then(function(reg){
+    console.log('registered service worker: ' + reg);
+  });
+ }

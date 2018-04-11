@@ -154,7 +154,7 @@ createRestaurantHTML = (restaurant) => {
   divContainer.classList.add('card-container');
   li.append(divContainer);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   divContainer.append(name);
 
